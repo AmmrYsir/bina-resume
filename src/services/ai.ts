@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 import type { ResumeData } from '../types'
 
 export interface AIService {
@@ -7,8 +7,7 @@ export interface AIService {
 
 export class GeminiService implements AIService {
   async generateResume(data: ResumeData, apiKey: string): Promise<string> {
-    const genAI = new GoogleGenerativeAI(apiKey)
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+    const ai = new GoogleGenAI({ apiKey })
 
     const prompt = `
       You are an expert resume writer and designer.
@@ -23,9 +22,12 @@ export class GeminiService implements AIService {
       - Ensure the layout is responsive if possible, but prioritize print/pdf look.
     `
 
-    const result = await model.generateContent(prompt)
-    const response = await result.response
-    let text = response.text()
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+    })
+
+    let text = response.text || ''
 
     // Clean up markdown code blocks if present
     text = text.replace(/```html/g, '').replace(/```/g, '')
