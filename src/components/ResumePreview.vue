@@ -2,7 +2,6 @@
 import { useResumeStore } from '../stores/resume'
 import { storeToRefs } from 'pinia'
 import { GeminiService } from '../services/ai'
-import { ref } from 'vue'
 import { Loader2, Wand2 } from 'lucide-vue-next'
 
 const store = useResumeStore()
